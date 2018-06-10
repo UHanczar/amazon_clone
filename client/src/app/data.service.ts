@@ -22,7 +22,6 @@ export class DataService {
   errorMessage(message) {
     this.messageType = 'danger';
     this.message = message;
-    console.log('THIS_MESSAGE', this.message);
   }
 
   successMessage(message) {

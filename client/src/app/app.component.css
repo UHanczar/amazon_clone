@@ -13,3 +13,8 @@
 #logo {
   width: 50px;
 }
+
+.dropdown-menu-dropdown {
+  position: absolute;
+  left: -40px !important;
+}
