@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 
 import config from '../config';
 import User from '../models/user';
+import checkJwt from '../middlewares/checkJwt';
 
 const router = Router();
 
@@ -64,5 +65,88 @@ router.post('/login', (req, res, next) => {
     }
   });
 });
+
+router.route('/profile')
+  .get(checkJwt, (req, res, next) => {
+    User.findOne({ _id: req.decoded.user._id }, (err, user) => {
+      if (err) {
+        res.json({
+          success: false,
+          message: 'There is some error in fenching data from database.'
+        });
+      } else {
+        res.json({
+          success: true,
+          message: 'Sending user data',
+          user
+        });
+      }
+    });
+  })
+  .post(checkJwt, (req, res, next) => {
+    User.findOne({ _id: req.decoded.user._id }, (err, user) => {
+      if (err) {
+        res.json({
+          success: false,
+          message: 'There is some error in fenching data from database.'
+        });
+      } else {
+        if (req.body.name) user.name = req.body.name;
+        if (req.body.email) user.email = req.body.email;
+        if (req.body.password) user.password = req.body.password;
+
+        user.isSeller = req.body.isSeller;
+
+        user.save();
+
+        res.json({
+          success: true,
+          message: 'Sucessfully updated your profile.'
+        });
+      }
+    });
+  });
+
+router.route('/address')
+  .get(checkJwt, (req, res, next) => {
+    User.findOne({ _id: req.decoded.user._id }, (err, user) => {
+      if (err) {
+        res.json({
+          success: false,
+          message: 'There is some error in fenching data from database.'
+        });
+      } else {
+        res.json({
+          success: true,
+          message: 'Sending user data',
+          address: user.address
+        });
+      }
+    });
+  })
+  .post(checkJwt, (req, res, next) => {
+    User.findOne({ _id: req.decoded.user._id }, (err, user) => {
+      if (err) {
+        res.json({
+          success: false,
+          message: 'There is some error in fenching data from database.'
+        });
+      } else {
+        if (req.body.addr1) user.address.addr1 = req.body.addr1;
+        if (req.body.addr2) user.address.addr2 = req.body.addr2;
+        if (req.body.city) user.address.city = req.body.city;
+        if (req.body.state) user.address.state = req.body.state;
+        if (req.body.country) user.address.country = req.body.country;
+        if (req.body.postalCode) user.address.postalCode = req.body.postalCode;
+
+        user.save();
+
+        res.json({
+          success: true,
+          message: 'Sucessfully updated your address.'
+        });
+      }
+    });
+  });
 
 export default router;
