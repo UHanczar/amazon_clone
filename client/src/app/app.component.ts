@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { DataService } from './data.service';
@@ -8,7 +8,7 @@ import { DataService } from './data.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   searchTerm = '';
   isCollapsed = true;
 
@@ -16,6 +16,10 @@ export class AppComponent {
     private router: Router,
     private data: DataService
   ) {}
+
+  ngOnInit() {
+    this.data.getProfile();
+  }
 
   get token() {
     return localStorage.getItem('token');

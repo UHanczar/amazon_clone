@@ -13,6 +13,9 @@ import { MessageComponent } from './message/message.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuardService } from './auth-guard.service';
+import { ProfileComponent } from './profile/profile.component';
+import { SettingsComponent } from './settings/settings.component';
+import { AddressComponent } from './address/address.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,10 @@ import { AuthGuardService } from './auth-guard.service';
     HomeComponent,
     MessageComponent,
     RegistrationComponent,
-    LoginComponent
+    LoginComponent,
+    ProfileComponent,
+    SettingsComponent,
+    AddressComponent
   ],
   imports: [
     BrowserModule,
