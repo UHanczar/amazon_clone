@@ -6,6 +6,8 @@ import cors from 'cors';
 
 import config from './config';
 import userRoutes from './routes/account';
+import categoryRoutes from './routes/category';
+import sellerRoutes from './routes/seller';
 
 const app = express();
 
@@ -22,6 +24,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('dev'));
 app.use(cors());
 
+app.use('/api', categoryRoutes);
 app.use('/api/accounts', userRoutes);
+app.use('/api/seller', sellerRoutes);
 
 app.listen(config.port, () => console.log(`Server runs on port ${config.port}`));

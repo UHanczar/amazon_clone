@@ -48,12 +48,12 @@ UserSchema.methods.gravatar = function(size) {
   }
 
   if (!this.email) {
-    return `http://gravatar.com/avatar/?s=${size}&d=retro`;
+    return `https://gravatar.com/avatar/?s=${size}&d=retro`;
   }
 
   const md5 = crypto.createHash('md5').update(this.email).digest('hex');
 
-  return `http://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
+  return `https://gravatar.com/avatar/${md5}?s${size}&d=retro`;
 };
 
 export default mongoose.model('User', UserSchema);
