@@ -3,7 +3,7 @@ import aws from 'aws-sdk';
 import multer from 'multer';
 import multerS3 from 'multer-s3';
 // for fake products
-import faker from 'faker';
+// import faker from 'faker';
 
 import config from '../config';
 import checkJwt from '../middlewares/checkJwt';
@@ -61,22 +61,22 @@ router.route('/products')
   });
 
 // just for testing
-router.get('/faker/test', (req, res, next) => {
-  for (let i = 0; i < 20; i++) {
-    const product = new Product();
-    product.category = '5b20450a83692d1b68f1dcbe';
-    product.owner = '5b1cf31ba671f027fce94956';
-    product.image = faker.image.cats();
-    product.title = faker.commerce.productName();
-    product.description = faker.lorem.words();
-    product.price = faker.commerce.price();
-    product.save();
-  }
-
-  res.json({
-    message: 'Successfully added 20 pictures'
-  });
-});
+// router.get('/faker/test', (req, res, next) => {
+//   for (let i = 0; i < 20; i++) {
+//     const product = new Product();
+//     product.category = '5b20450a83692d1b68f1dcbe';
+//     product.owner = '5b1cf31ba671f027fce94956';
+//     product.image = faker.image.cats();
+//     product.title = faker.commerce.productName();
+//     product.description = faker.lorem.words();
+//     product.price = faker.commerce.price();
+//     product.save();
+//   }
+//
+//   res.json({
+//     message: 'Successfully added 20 pictures'
+//   });
+// });
 
 export default router;
 
