@@ -9,6 +9,7 @@
     "@babel/core": "7.0.0-beta.44",
     "@babel/node": "^7.0.0-beta.44",
     "@babel/preset-env": "^7.0.0-beta.49",
+    "async": "^2.6.1",
     "aws-sdk": "^2.263.1",
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.18.3",
