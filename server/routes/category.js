@@ -3,6 +3,9 @@ import async from 'async';
 
 import Category from '../models/category';
 import Product from '../models/product';
+import Review from '../models/review';
+
+import checkJwt from '../middlewares/checkJwt';
 
 const router = Router();
 
@@ -42,6 +45,7 @@ router.get('/categories/:id', (req, res, next) => {
         .limit(perPage)
         .populate('category')
         .populate('owner')
+        .populate('review')
         .exec((err, products) => {
           if (err) {
             return next(err);
@@ -106,6 +110,7 @@ router.get('/product/:id', (req, res, next) => {
   Product.findById({ _id: req.params.id })
     .populate('category')
     .populate('owner')
+    .deepPopulate('reviews.owner')
     .exec((err, product) => {
       if (err) {
         res.json({
@@ -119,6 +124,39 @@ router.get('/product/:id', (req, res, next) => {
         });
       }
     });
+});
+
+router.post('/product/review', checkJwt, (req, res, next) => {
+  async.waterfall([
+    callback => Product.findOne({ _id: req.body.productId }, (err, product) => {
+      if (product) {
+        callback(err, product);
+      }
+    }),
+    product => {
+      let review = new Review();
+
+      review.owner = req.decoded.user._id;
+      review.rating = req.body.rating;
+
+      if (req.body.title) {
+        review.title = req.body.title;
+      }
+
+      if (req.body.description) {
+        review.description = req.body.description;
+      }
+
+      product.reviews.push(review._id);
+      product.save();
+      review.save();
+
+      res.json({
+        success: true,
+        message: 'Successfully added new review.'
+      })
+    }
+  ]);
 });
 
 export default router;
