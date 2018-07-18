@@ -45,7 +45,7 @@ router.get('/categories/:id', (req, res, next) => {
         .limit(perPage)
         .populate('category')
         .populate('owner')
-        .populate('review')
+        .deepPopulate('reviews.owner')
         .exec((err, products) => {
           if (err) {
             return next(err);

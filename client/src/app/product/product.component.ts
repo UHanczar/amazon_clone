@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 
 import { RestApiService } from "../rest-api.service";
 import { DataService } from "../data.service";
+import {P} from "@angular/core/src/render3";
 
 @Component({
   selector: 'app-product',
@@ -11,6 +12,12 @@ import { DataService } from "../data.service";
 })
 export class ProductComponent implements OnInit {
   product: any;
+  myReview = {
+    title: '',
+    description: '',
+    rating: 0
+  };
+  btnDisabled = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -27,6 +34,25 @@ export class ProductComponent implements OnInit {
           this.router.navigate(['/'])
         ).catch(error => this.data.errorMessage(error['message']));
     })
+  }
+
+  async postReview() {
+    this.btnDisabled = true;
+
+    try {
+      const result = await this.api.post('product/review', {
+        ...this.myReview,
+        productId: this.product._id
+      });
+
+      result['success'] ?
+        this.data.successMessage(result['message']) :
+        this.data.errorMessage(result['message']);
+    } catch(error) {
+      this.data.errorMessage(error['message']);
+    }
+
+    this.btnDisabled = false;
   }
 
 }

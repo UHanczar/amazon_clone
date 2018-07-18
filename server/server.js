@@ -8,6 +8,7 @@ import config from './config';
 import userRoutes from './routes/account';
 import categoryRoutes from './routes/category';
 import sellerRoutes from './routes/seller';
+import productSearchRoutes from './routes/productSearch';
 
 const app = express();
 
@@ -27,5 +28,6 @@ app.use(cors());
 app.use('/api', categoryRoutes);
 app.use('/api/accounts', userRoutes);
 app.use('/api/seller', sellerRoutes);
+app.use('/api/search', productSearchRoutes);
 
 app.listen(config.port, () => console.log(`Server runs on port ${config.port}`));
