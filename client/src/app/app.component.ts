@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.data.cartItems = this.data.getCart().length;
     this.data.getProfile();
   }
 
@@ -35,6 +36,7 @@ export class AppComponent implements OnInit {
 
   logout() {
     this.data.user = {};
+    this.data.cartItems = 0;
     localStorage.clear();
     this.router.navigate(['']);
   }

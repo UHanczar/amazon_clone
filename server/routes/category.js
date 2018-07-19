@@ -1,13 +1,16 @@
 import { Router } from 'express';
 import async from 'async';
+// import stripe from 'stripe';
 
 import Category from '../models/category';
 import Product from '../models/product';
 import Review from '../models/review';
+import Order from '../models/order';
 
 import checkJwt from '../middlewares/checkJwt';
 
 const router = Router();
+const stripe = require('stripe')('sk_test_i5btf5gjEIOCD159UBtlqJkc');
 
 router.route('/categories')
   .get((req, res, next) => {
@@ -157,6 +160,42 @@ router.post('/product/review', checkJwt, (req, res, next) => {
       })
     }
   ]);
+});
+
+router.post('/payment', checkJwt, (req, res, next) => {
+  const stripeToken = req.body.stripeToken;
+  const currentCharges = Math.round(req.body.totalPrice * 100);
+  stripe.customers
+    .create({
+      source: stripeToken.id
+    })
+    .then((customer) => {
+      return stripe.charges.create({
+        amount: currentCharges,
+        currency: 'usd',
+        customer: customer.id
+      });
+    })
+    .then((charge) => {
+      const products = req.body.products;
+
+      let order = new Order();
+      order.owner = req.decoded.user._id;
+      order.totalPrice = currentCharges;
+
+      products.map(product => {
+        order.products.push({
+          product: product.product,
+          quantity: product.quantity
+        });
+      });
+
+      order.save();
+      res.json({
+        success: true,
+        message: "Successfully made a payment"
+      });
+    });
 });
 
 export default router;
